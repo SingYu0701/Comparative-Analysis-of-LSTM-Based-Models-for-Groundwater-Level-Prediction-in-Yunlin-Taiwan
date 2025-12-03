@@ -1,5 +1,5 @@
 # Comparative-Analysis-of-LSTM-Based-Models-for-Groundwater-Level-Prediction-in-Yunlin-Taiwan
-Final report of Stochastic Subsurface Hydrology,June 2025 @ NCKU Resource Engineering
+Final report of Stochastic Subsurface Hydrology, June 2025 @ NCKU Resource Engineering
 
 ![Made with Python](https://img.shields.io/badge/Made%20with-Python-blue?logo=python)
 ![Colab](https://img.shields.io/badge/Google-Colab-yellow?logo=googlecolab)
