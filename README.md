@@ -34,13 +34,13 @@ Source: Water Resources Agency, Ministry of Economic Affairs (as noted in the re
 
 **Split data into four dataset-length scenarios for experiments:**
 
-1-year dataset: 2022 only
+- 1-year dataset: 2022 only
 
-5-year dataset: 2018–2022
+- 5-year dataset: 2018–2022
 
-10-year dataset: 2013–2022
+- 10-year dataset: 2013–2022
 
-20-year dataset: 2003–2022
+- 20-year dataset: 2003–2022
 
 ### Data preprocessing (BEAST)
 
@@ -85,22 +85,21 @@ Convolutional feature maps are passed to LSTM layers to model long-term dependen
 
 1D convolution → BiLSTM pipeline to capture local features and bidirectional temporal context.
 
-###Evaluation metrics###
+### Evaluation metrics
 
 Three metrics to quantify error and fit:
 
 **Mean Squared Error (MSE):**
 
-$$MSE=1n∑i=1n(yi−y^i)2$$
+$$MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
 
 **Root Mean Squared Error (RMSE):**
 
-$$RMSE=1n∑i=1n(yi−y^i)2$$
+$$RMSE = \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 }$$
 
 **Coefficient of Determination (R²):**
 
-$$R2=1−∑i=1n(yi−y^i)2∑i=1n(yi−yˉ)2$$
-
+$$R^2=1-\frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2} {\sum_{i=1}^{n} (y_i - \bar{y})^2}$$
 
 ### Interpretation:
 
@@ -149,22 +148,27 @@ LSTM units: 64–256 (tune per model / dataset size)
 
 Below is the key results table reproduced from the project report (test set metrics):
 
+<div align="center">
+	
 Table 1 — Fit performance by dataset length and model (MSE / RMSE / R²)
 
 |Period	|Metric	|LSTM	|BiLSTM	|CNN-LSTM	|CNN-BiLSTM|
 |---|---|---|---|---|---|
 |1 year	|MSE	|0.000587	|0.004290	|0.011579|	0.001742|
-	||RMSE	|0.024222	|0.065499	|0.107605	|0.041742|
-	||R²	|0.981730	|0.866407	|0.639438	|0.945741|
+| |RMSE	|0.024222	|0.065499	|0.107605	|0.041742|
+| |R²	|0.981730	|0.866407	|0.639438	|0.945741|
 |5 year	|MSE	|0.000133	|0.000303	|0.000769	|0.000889|
-	||RMSE	|0.011538	|0.017410	|0.027728	|0.029810|
-	||R²	|0.990772	|0.978990	|0.946705	|0.938401|
-|10 yr	|MSE	|0.001617	|0.007054	|0.007034|	0.009505|
-	||RMSE	|0.040210	|0.083989	|0.083871	|0.097492|
-	||R²	|0.966214|	0.852595	|0.853010	|0.801388|
-|20 yr	|MSE	|0.004421	|0.003920	|0.006058	|0.007448|
-	||RMSE	|0.066488	|0.062609	|0.077832	|0.086301|
-	||R²	|0.876849	|0.890801	|0.831241	|0.792521|
+| |RMSE	|0.011538	|0.017410	|0.027728	|0.029810|
+| |R²	|0.990772	|0.978990	|0.946705	|0.938401|
+|10 year	|MSE	|0.001617	|0.007054	|0.007034|	0.009505|
+| |RMSE	|0.040210	|0.083989	|0.083871	|0.097492|
+| |R²	|0.966214|	0.852595	|0.853010	|0.801388|
+|20 year	|MSE	|0.004421	|0.003920	|0.006058	|0.007448|
+| |RMSE	|0.066488	|0.062609	|0.077832	|0.086301|
+| |R²	|0.876849	|0.890801	|0.831241	|0.792521|
+
+</div>
+	
 <img width="1179" height="616" alt="圖片" src="https://github.com/user-attachments/assets/bee5ac7c-2381-40c0-9a6a-cab805312a30" />
 <img width="1122" height="616" alt="圖片" src="https://github.com/user-attachments/assets/7afe39df-3be4-4b53-92d4-7af8f11a26a5" />
 <img width="1107" height="610" alt="圖片" src="https://github.com/user-attachments/assets/3dfcd794-f555-42ab-b7b9-65cc7f93f90a" />
