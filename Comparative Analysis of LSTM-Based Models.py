@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
 
 import pandas as pd
 import numpy as np
@@ -13,8 +11,6 @@ from tensorflow.keras.layers import LSTM, Dense, Bidirectional, Conv1D, MaxPooli
 from google.colab import files
 uploaded = files.upload()
 
-
-# In[ ]:
 
 
 data = pd.read_excel('Yuanchang_imputed.xlsx', engine='openpyxl')
@@ -43,7 +39,7 @@ print("10 year data length:", len(data_sets['data_10yr']))
 print("20 year data length:", len(data_sets['data_20yr']))
 
 
-# In[ ]:
+
 
 
 import matplotlib.pyplot as plt
@@ -58,7 +54,7 @@ plt.tight_layout()
 plt.show()
 
 
-# In[ ]:
+
 
 
 def create_dataset(series, time_steps=10):
@@ -69,7 +65,6 @@ def create_dataset(series, time_steps=10):
     return np.array(X), np.array(y)
 
 
-# In[ ]:
 
 
 from tensorflow.keras.models import Sequential
@@ -121,14 +116,12 @@ def build_cnn_bilstm(input_shape):
     return model
 
 
-# In[ ]:
-
 
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.metrics import mean_squared_error, r2_score
 
-results = []  # 存放評估結果
+results = []  
 
 time_steps = 30
 epochs = 64
@@ -136,14 +129,14 @@ batch_size = 32
 
 for period_name, df in data_sets.items():
     values = df['Yuanchang_2'].values.reshape(-1, 1)
-    dates = df['Date'].values  # 取出日期
+    dates = df['Date'].values 
 
     scaler = MinMaxScaler()
     values_scaled = scaler.fit_transform(values)
 
     X, y = create_dataset(values_scaled, time_steps)
 
-    # 同樣切日期，要往後移 time_steps 才對齊 (create_dataset 裡是這邊用的方法)
+   
     dates = dates[time_steps:]
 
     split = int(len(X) * 0.8)
@@ -181,7 +174,6 @@ for period_name, df in data_sets.items():
         })
 
 
-# In[ ]:
 
 
 import pandas as pd
@@ -189,13 +181,13 @@ results_df = pd.DataFrame(results)
 results_df
 
 
-# In[ ]:
+
 
 
 results_df[['Period', 'Model', 'MSE', 'RMSE','R2']]
 
 
-# In[ ]:
+
 
 
 import matplotlib.pyplot as plt
@@ -204,21 +196,21 @@ import numpy as np
 import pandas as pd
 import matplotlib.dates as mdates
 
-# MSE 條形圖
+# MSE
 plt.figure(figsize=(12,6))
 sns.barplot(data=results_df, x='Period', y='MSE', hue='Model')
 plt.title('Model MSE Comparison by Time Period')
 plt.ylabel('MSE')
 plt.show()
 
-# RMSE 條形圖
+# RMSE
 plt.figure(figsize=(12,6))
 sns.barplot(data=results_df, x='Period', y='RMSE', hue='Model')
 plt.title('Model RMSE Comparison by Time Period')
 plt.ylabel('RMSE')
 plt.show()
 
-# R2 條形圖
+# R2
 plt.figure(figsize=(12,6))
 ax = sns.barplot(data=results_df, x='Period', y='R2', hue='Model')
 plt.title('Model R² Comparison by Time Period')
@@ -227,7 +219,7 @@ plt.legend(loc='lower right')
 plt.show()
 
 
-# In[ ]:
+
 
 
 import matplotlib.pyplot as plt
@@ -243,13 +235,13 @@ for period_name in periods:
     plt.figure(figsize=(16, 12))
     plt.suptitle(f'Period: {period_name}', fontsize=18)
 
-    # 篩選該期間所有結果
+
     period_results = [res for res in results if res['Period'] == period_name]
 
     for i, model_name in enumerate(models):
         ax = plt.subplot(2, 2, i + 1)
 
-        # 取得該模型該期間的結果
+
         res = next((r for r in period_results if r['Model'] == model_name), None)
         if res is None:
             continue
@@ -263,13 +255,13 @@ for period_name in periods:
         duration_years = (res['date_test'][-1] - res['date_test'][0]).days / 365.25
 
         if duration_years > 15:
-          ax.xaxis.set_major_locator(YearLocator(5))  # 每5年
+          ax.xaxis.set_major_locator(YearLocator(5)) 
         elif duration_years > 8:
-          ax.xaxis.set_major_locator(YearLocator(1))  # 每年
+          ax.xaxis.set_major_locator(YearLocator(1))  
         elif duration_years > 1:
-          ax.xaxis.set_major_locator(MonthLocator(interval=6))  # 每半年
+          ax.xaxis.set_major_locator(MonthLocator(interval=6))  
         else:
-          ax.xaxis.set_major_locator(MonthLocator(interval=1))  # 每月
+          ax.xaxis.set_major_locator(MonthLocator(interval=1))  
 
         ax.xaxis.set_major_formatter(DateFormatter('%Y-%m'))
         ax.tick_params(axis='x', labelrotation=45)
